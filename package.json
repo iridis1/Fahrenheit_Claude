@@ -1,0 +1,33 @@
+{
+  "name": "temp-converter",
+  "version": "1.0.0",
+  "description": "REST API for converting temperatures between Celsius, Fahrenheit, and Kelvin",
+  "main": "dist/server.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "test": "jest",
+    "lint": "tsc --noEmit"
+  },
+  "keywords": ["temperature", "converter", "express", "typescript"],
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2",
+    "swagger-jsdoc": "^6.0.0",
+    "swagger-ui-express": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.14.0",
+    "@types/supertest": "^6.0.2",
+    "@types/swagger-jsdoc": "^6.0.0",
+    "@types/swagger-ui-express": "^4.0.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.4",
+    "ts-node-dev": "^2.0.0",
+    "supertest": "^6.3.4",
+    "typescript": "^5.4.5"
+  }
+}
