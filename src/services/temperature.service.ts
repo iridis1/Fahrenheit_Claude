@@ -1,6 +1,5 @@
 import { TemperatureResult, TemperatureUnit } from '../types';
 
-
 /**
  * Converts a single temperature value (in the given unit) into all three
  * supported units: Celsius, Fahrenheit, and Kelvin.
@@ -32,7 +31,7 @@ export function convertTemperature(
   const kelvin = celsius + 273.15;
 
   if (kelvin < -Number.EPSILON) {
-      throw new Error(`Value ${value} ${unit} is below absolute zero (0 kelvin)`);
+    throw new Error(`Value ${value} ${unit} is below absolute zero (0 Kelvin)`);
   }
 
   return {

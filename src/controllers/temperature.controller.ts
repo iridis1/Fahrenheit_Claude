@@ -16,7 +16,7 @@ export function convertHandler(
   next: NextFunction
 ): void {
   try {
-
+    
     if (Object.keys(req.query).length === 0) {
       throw new ApiError(
         400,
@@ -49,17 +49,17 @@ export function convertHandler(
     const rawValue = req.query[unit];
     const value = parseTemperatureValue(rawValue, unit);
 
-    var result: TemperatureResult;
+    let result: TemperatureResult;
 
     try {
-     result = convertTemperature(value, unit);
+      result = convertTemperature(value, unit);
     } catch (err) {
       throw new ApiError(
         400,
         'CONVERSION_ERROR',
         err instanceof Error ? err.message : 'Conversion error'
       );
-     }
+    }
 
     const response: ConvertSuccessResponse = {
       input: { unit, value },

@@ -27,7 +27,7 @@ describe('GET /convert', () => {
     expect(res.body.result.kelvin).toBe(273);
   });
 
-    it('returns 400 when no parameter is provided', async () => {
+  it('returns 400 when no parameter is provided', async () => {
     const res = await request(app).get('/convert');
     expect(res.status).toBe(400);
     expect(res.body.error.code).toBe('MISSING_PARAMETER');
