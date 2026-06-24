@@ -1,4 +1,5 @@
-export type TemperatureUnit = 'celsius' | 'fahrenheit' | 'kelvin';
+export const TEMPERATURE_UNITS = ['celsius', 'fahrenheit', 'kelvin'] as const;
+export type TemperatureUnit = (typeof TEMPERATURE_UNITS)[number];
 
 export interface TemperatureResult {
   celsius: number;

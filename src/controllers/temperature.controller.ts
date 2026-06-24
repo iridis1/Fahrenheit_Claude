@@ -1,8 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { convertTemperature } from '../services/temperature.service';
-import { ApiError, ConvertSuccessResponse, TemperatureResult, TemperatureUnit } from '../types';
-
-const SUPPORTED_UNITS: TemperatureUnit[] = ['celsius', 'fahrenheit', 'kelvin'];
+import { ApiError, ConvertSuccessResponse, TemperatureResult, TemperatureUnit, TEMPERATURE_UNITS } from '../types';
 
 /**
  * GET /convert?celsius=100
@@ -35,7 +33,7 @@ export function convertHandler(
       );
     }
 
-    const providedUnits = SUPPORTED_UNITS.filter(
+    const providedUnits = TEMPERATURE_UNITS.filter(
       (unit) => req.query[unit] !== undefined
     );
 
