@@ -1,7 +1,5 @@
 import { TemperatureResult, TemperatureUnit, ApiError } from '../types';
 
-// Small epsilon to tolerate floating point rounding when checking absolute zero.
-const EPSILON = 1e-9;
 
 /**
  * Converts a single temperature value (in the given unit) into all three
@@ -26,12 +24,14 @@ export function convertTemperature(
     case 'kelvin':
       celsius = value - 273.15;
       break;
+    default:
+      throw new Error(`Unknown temperature unit: ${unit}`);
   }
 
   const fahrenheit = (celsius * 9) / 5 + 32;
   const kelvin = celsius + 273.15;
 
-  if (kelvin < -EPSILON) {
+  if (kelvin < -Number.EPSILON) {
     throw new ApiError(
       400,
       'BELOW_ABSOLUTE_ZERO',
@@ -51,6 +51,6 @@ export function convertTemperature(
  * common floating point artifacts (e.g. 21.099999999999998).
  */
 function roundTo(num: number, decimals: number): number {
-  const factor = Math.pow(10, decimals);
+  const factor = 10 ** decimals;
   return Math.round((num + Number.EPSILON) * factor) / factor;
 }
