@@ -1,12 +1,5 @@
 import { TemperatureResult, TemperatureUnit, ApiError } from '../types';
 
-// Absolute zero in each unit, used to reject physically impossible values.
-const ABSOLUTE_ZERO = {
-  kelvin: 0,
-  celsius: -273.15,
-  fahrenheit: -459.67,
-} as const;
-
 // Small epsilon to tolerate floating point rounding when checking absolute zero.
 const EPSILON = 1e-9;
 
@@ -14,20 +7,13 @@ const EPSILON = 1e-9;
  * Converts a single temperature value (in the given unit) into all three
  * supported units: Celsius, Fahrenheit, and Kelvin.
  *
- * Throws an ApiError (400) if the value is below absolute zero for its unit.
+ * Throws an ApiError (400) if the converted kelvin value is below absolute
+ * zero.
  */
 export function convertTemperature(
   value: number,
   unit: TemperatureUnit
 ): TemperatureResult {
-  if (value < ABSOLUTE_ZERO[unit] - EPSILON) {
-    throw new ApiError(
-      400,
-      'BELOW_ABSOLUTE_ZERO',
-      `Value ${value} ${unit} is below absolute zero (${ABSOLUTE_ZERO[unit]} ${unit}).`
-    );
-  }
-
   let celsius: number;
 
   switch (unit) {
@@ -45,10 +31,18 @@ export function convertTemperature(
   const fahrenheit = (celsius * 9) / 5 + 32;
   const kelvin = celsius + 273.15;
 
+  if (kelvin < -EPSILON) {
+    throw new ApiError(
+      400,
+      'BELOW_ABSOLUTE_ZERO',
+      `Value ${value} ${unit} is below absolute zero (0 kelvin).`
+    );
+  }
+
   return {
-    celsius: roundTo(celsius, 4),
-    fahrenheit: roundTo(fahrenheit, 4),
-    kelvin: roundTo(kelvin, 4),
+    celsius: roundTo(celsius, 2),
+    fahrenheit: roundTo(fahrenheit, 2),
+    kelvin: roundTo(kelvin, 2),
   };
 }
 
