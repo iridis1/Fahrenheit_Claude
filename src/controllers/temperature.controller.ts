@@ -18,6 +18,23 @@ export function convertHandler(
   next: NextFunction
 ): void {
   try {
+
+    if (Object.keys(req.query).length === 0) {
+      throw new ApiError(
+        400,
+        'MISSING_PARAMETER',
+        'Provide temperature parameter celsius, fahrenheit or kelvin.'
+      );
+    }
+
+    if (Object.keys(req.query).length > 1) {
+      throw new ApiError(
+        400,
+        'MULTIPLE_PARAMETERS',
+        'Provide a single temperature parameter celsius, fahrenheit or kelvin.'
+      );
+    }
+
     const providedUnits = SUPPORTED_UNITS.filter(
       (unit) => req.query[unit] !== undefined
     );
@@ -25,16 +42,8 @@ export function convertHandler(
     if (providedUnits.length === 0) {
       throw new ApiError(
         400,
-        'MISSING_PARAMETER',
-        'Provide exactly one query parameter: celsius, fahrenheit, or kelvin.'
-      );
-    }
-
-    if (providedUnits.length > 1) {
-      throw new ApiError(
-        400,
-        'MULTIPLE_PARAMETERS',
-        `Provide exactly one temperature parameter, but received: ${providedUnits.join(', ')}.`
+        'INVALID_PARAMETER',
+        'Only parameter celsius, fahrenheit or kelvin is supported.'
       );
     }
 

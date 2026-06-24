@@ -27,14 +27,20 @@ describe('GET /convert', () => {
     expect(res.body.result.kelvin).toBe(273);
   });
 
-  it('returns 400 when no parameter is provided', async () => {
+    it('returns 400 when no parameter is provided', async () => {
     const res = await request(app).get('/convert');
     expect(res.status).toBe(400);
     expect(res.body.error.code).toBe('MISSING_PARAMETER');
   });
 
+  it('returns 400 when an invalid parameter is provided', async () => {
+    const res = await request(app).get('/convert?milligram=100');
+    expect(res.status).toBe(400);
+    expect(res.body.error.code).toBe('INVALID_PARAMETER');
+  });
+
   it('returns 400 when multiple parameters are provided', async () => {
-    const res = await request(app).get('/convert?celsius=10&kelvin=283');
+    const res = await request(app).get('/convert?celsius=10&millimeter=100');
     expect(res.status).toBe(400);
     expect(res.body.error.code).toBe('MULTIPLE_PARAMETERS');
   });
@@ -46,7 +52,7 @@ describe('GET /convert', () => {
   });
 
   it('returns 400 when value is below absolute zero', async () => {
-    const res = await request(app).get('/convert?kelvin=-5');
+    const res = await request(app).get('/convert?celsius=-400');
     expect(res.status).toBe(400);
     expect(res.body.error.code).toBe('BELOW_ABSOLUTE_ZERO');
   });
