@@ -1,5 +1,4 @@
 import { convertTemperature } from '../services/temperature.service';
-import { ApiError } from '../types';
 
 describe('convertTemperature', () => {
   it('converts from celsius correctly', () => {
@@ -30,15 +29,15 @@ describe('convertTemperature', () => {
   });
 
   it('throws when value is below absolute zero in kelvin', () => {
-    expect(() => convertTemperature(-1, 'kelvin')).toThrow(ApiError);
+    expect(() => convertTemperature(-1, 'kelvin')).toThrow(/below absolute zero/);
   });
 
   it('throws when value is below absolute zero in celsius', () => {
-    expect(() => convertTemperature(-300, 'celsius')).toThrow(ApiError);
+    expect(() => convertTemperature(-300, 'celsius')).toThrow(/below absolute zero/);
   });
 
   it('throws when value is below absolute zero in fahrenheit', () => {
-    expect(() => convertTemperature(-500, 'fahrenheit')).toThrow(ApiError);
+    expect(() => convertTemperature(-500, 'fahrenheit')).toThrow(/below absolute zero/);
   });
 
   it('allows exactly absolute zero', () => {

@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { convertTemperature } from '../services/temperature.service';
-import { ApiError, ConvertSuccessResponse, TemperatureUnit } from '../types';
+import { ApiError, ConvertSuccessResponse, TemperatureResult, TemperatureUnit } from '../types';
 
 const SUPPORTED_UNITS: TemperatureUnit[] = ['celsius', 'fahrenheit', 'kelvin'];
 
@@ -51,7 +51,17 @@ export function convertHandler(
     const rawValue = req.query[unit];
     const value = parseTemperatureValue(rawValue, unit);
 
-    const result = convertTemperature(value, unit);
+    var result: TemperatureResult;
+
+    try {
+     result = convertTemperature(value, unit);
+    } catch (err) {
+      throw new ApiError(
+        400,
+        'CONVERSION_ERROR',
+        err instanceof Error ? err.message : 'Conversion error'
+      );
+     }
 
     const response: ConvertSuccessResponse = {
       input: { unit, value },

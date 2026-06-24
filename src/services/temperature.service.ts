@@ -1,4 +1,4 @@
-import { TemperatureResult, TemperatureUnit, ApiError } from '../types';
+import { TemperatureResult, TemperatureUnit } from '../types';
 
 
 /**
@@ -32,11 +32,7 @@ export function convertTemperature(
   const kelvin = celsius + 273.15;
 
   if (kelvin < -Number.EPSILON) {
-    throw new ApiError(
-      400,
-      'BELOW_ABSOLUTE_ZERO',
-      `Value ${value} ${unit} is below absolute zero (0 kelvin).`
-    );
+      throw new Error(`Value ${value} ${unit} is below absolute zero (0 kelvin)`);
   }
 
   return {

@@ -54,7 +54,8 @@ describe('GET /convert', () => {
   it('returns 400 when value is below absolute zero', async () => {
     const res = await request(app).get('/convert?celsius=-400');
     expect(res.status).toBe(400);
-    expect(res.body.error.code).toBe('BELOW_ABSOLUTE_ZERO');
+    expect(res.body.error.code).toBe('CONVERSION_ERROR');
+    expect(res.body.error.message).toContain('below absolute zero');
   });
 
   it('serves the Swagger documentation page', async () => {
